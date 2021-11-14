@@ -11,7 +11,6 @@ function getToken(url, clientID, secret) {
     tokenReq.setRequestHeader("Authorization", "Basic " + btoa(clientID + ":" + secret));
     tokenReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
     tokenReq.send("grant_type=client_credentials&client_id="+clientID+"&"+"client_secret="+secret);
-    // console.log(tokenReq.send);
     tokenReq.addEventListener ("load", function() {
         if (tokenReq.status >= 200 && tokenReq.status < 400) {
             let response = JSON.parse(tokenReq.responseText);
@@ -21,7 +20,6 @@ function getToken(url, clientID, secret) {
             token = key;
             console.log(token);
             redditRetrieve(token);
-            // redditRetrieve(wallstreetbets)
         }
 
         else {
@@ -32,7 +30,7 @@ function getToken(url, clientID, secret) {
 
 let redditRetrieve = function(token) {
     if (token) {
-        let url = 'https://oauth.reddit.com/r/wallstreetbets/about';
+        let url = 'https://dashboard.nbshare.io/api/v1/apps/reddit';
         let data ={
             name: userName,
             id: password
@@ -51,9 +49,18 @@ let redditRetrieve = function(token) {
                     response.json().then(function(data)
                     {
                         console.log(data);
+                        sortData(data);
                     })
                 }
             })
+    }
+}
+
+let sortData = function(data) {
+    
+    for (let i = 0; i < data.length; i++) {
+            console.log(data[i]);
+            return data[i];
     }
 }
 
