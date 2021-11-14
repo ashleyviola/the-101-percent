@@ -11,7 +11,8 @@ function getToken(url, clientID, secret) {
     tokenReq.setRequestHeader("Authorization", "Basic " + btoa(clientID + ":" + secret));
     tokenReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
     tokenReq.send("grant_type=client_credentials&client_id="+clientID+"&"+"client_secret="+secret);
-    tokenReq.addEventListener ("load", function(){
+    // console.log(tokenReq.send);
+    tokenReq.addEventListener ("load", function() {
         if (tokenReq.status >= 200 && tokenReq.status < 400) {
             let response = JSON.parse(tokenReq.responseText);
             console.log(response);
@@ -19,6 +20,8 @@ function getToken(url, clientID, secret) {
             key = obj.access_token;
             token = key;
             console.log(token);
+            redditRetrieve(token);
+            // redditRetrieve(wallstreetbets)
         }
 
         else {
@@ -27,13 +30,31 @@ function getToken(url, clientID, secret) {
     });
 }
 
-
-let redditRetrieve = function() {
-    getToken(tokenUrl, userName, password);
-    
-    fetch("https://www.reddit.com/api/v1/me").then(function(response) {
-        console.log(response);
-    })
+let redditRetrieve = function(token) {
+    if (token) {
+        let url = 'https://oauth.reddit.com/r/wallstreetbets/about';
+        let data ={
+            name: userName,
+            id: password
+        };
+        let otherPram={
+            method: "GET",
+            headers:{
+                "Content-Type":"application/json",
+                'Authorization': 'bearer ' + token,
+                'User-Agent': 'rwar'
+            },
+        };
+        fetch(url, otherPram)
+            .then(function (response) {
+                if (response.ok) {
+                    response.json().then(function(data)
+                    {
+                        console.log(data);
+                    })
+                }
+            })
+    }
 }
 
-redditRetrieve();
+getToken(tokenUrl, userName, password);
