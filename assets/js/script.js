@@ -6,37 +6,51 @@ let modalExitBtn = document.querySelector("close");
 let recentSearchCounter = [];
 let recentSearches = [];
 
+// call API information
+let getStockTickerData = function(stockName){
+    apiKey = "XY2QN2G7T7ZHKP88"
+    var apiUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+ stockName + "&apikey=" + apiKey;
+
+    fetch(apiUrl)
+    .then(function(response){
+        if(response.ok){
+            response.json().then(function(data){
+                console.log(data);
+            });
+        } 
+    });
+};
 // Search Input Handler 
 let formSubmitHandler = function(event){
     event.preventDefault();
-    let stockCallNameInput = stockNameInputEl.value.trim();
    
+    let stockCallNameInput = stockNameInputEl.value.trim();
+
     // check if inputs are empty
     if(!stockCallNameInput){
         displayModalHandler();
         return false;
     }
+
     // NEED TO ADD VALIDATION OF TICKER VALUE FROM API 
+    stockNameInputEl.value = "";
+    
 
-    stockNameInputEl.value = ""
+    getStockTickerData(stockCallNameInput)
 
-    // check if this is a new search or previous 
+    var recentSearchObj = {
+        ticker: stockCallNameInput 
+    };
+    console.log(recentSearchObj)
 
-    var pastSearch = stockSearchEl.hasAttribute("search-id");
-    if (pastSearch){
-        // var searchId = stockSearchEl.getAttribute("search-id");
-        // console.log("this has been previously searched");
-    } else {
-        var recentSearchObj = {
-            ticker: stockCallNameInput 
-        };
-        console.log(recentSearchObj)
-        createRecentSearchBtns(recentSearchObj)
-    }
-
+     createRecentSearchBtns(recentSearchObj);
+ 
 };
 
+
+// dynamically create recent search buttons 
 let createRecentSearchBtns = function(recentSearchObj){
+
     // creating button element 
     var savedListItemEl = document.createElement("li");
     savedListItemEl.className = "saved-item";
@@ -52,19 +66,20 @@ let createRecentSearchBtns = function(recentSearchObj){
     recentSearchObj.id = recentSearchCounter;
 
     recentSearches.push(recentSearchObj);
-
-    // save tasks to localStorage
-    saveSearchInput();
     
+    saveSearchInput();
+
     // increase task counter for next task id 
     recentSearchCounter++;
-}
+
+};
 
 // save search input to localstorage 
 let saveSearchInput = function(){
     localStorage.setItem("stockTickers", JSON.stringify(recentSearches));
 }
 
+// load past searches 
 let loadSearches = function(){
     let savedSearches = localStorage.getItem("stockTickers");
     if(!savedSearches){
@@ -74,9 +89,9 @@ let loadSearches = function(){
     
     savedSearches = JSON.parse(savedSearches);
     console.log(savedSearches);
-//     for (let i = 0; i < savedSearches.length; i++){
-//         createRecentSearchBtns(savedSearches[i]);
-//     }
+    for (let i = 0; i < savedSearches.length; i++){
+        createRecentSearchBtns(savedSearches[i]);
+    }
 }
 
 // modal functions 
@@ -91,4 +106,5 @@ let exitModalHandler = function(){
 stockSearchEl.addEventListener("submit",formSubmitHandler);
 modalEl.addEventListener("click",exitModalHandler);
 
+// on load functions 
 loadSearches();
