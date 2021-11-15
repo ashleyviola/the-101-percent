@@ -26,25 +26,40 @@ let formSubmitHandler = function(event){
    
     let stockCallNameInput = stockNameInputEl.value.trim();
 
-    // check if inputs are empty
+    var recentSearchObj = {
+        ticker: stockCallNameInput 
+    };
+
     if(!stockCallNameInput){
         displayModalHandler();
         return false;
     }
 
-    // NEED TO ADD VALIDATION OF TICKER VALUE FROM API 
+    if (recentSearches.length > 0){
+        for (let i = 0; i < recentSearches.length; i++){
+            if(stockCallNameInput == recentSearches[i].ticker){
+                console.log(recentSearches[i].ticker);
+                console.log("this ticker has already been searched");
+                console.log(recentSearchObj);
+                getStockTickerData(stockCallNameInput);
+                break;
+            } else {
+                console.log(recentSearches[i].ticker);
+                console.log("this hasn't been searched yet");
+                console.log(recentSearchObj);
+                createRecentSearchBtns(recentSearchObj);
+                break;
+            }
+        }
+    } else {
+        console.log("there are no previous saved searches. this is the first search.");
+        console.log(recentSearchObj);
+        createRecentSearchBtns(recentSearchObj);
+    }
+
     stockNameInputEl.value = "";
-    
 
-    getStockTickerData(stockCallNameInput)
-
-    var recentSearchObj = {
-        ticker: stockCallNameInput 
-    };
-    console.log(recentSearchObj)
-
-     createRecentSearchBtns(recentSearchObj);
- 
+    console.log(recentSearches);
 };
 
 
