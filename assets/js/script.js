@@ -3,7 +3,6 @@ let stockNameInputEl = document.querySelector("#stock-call-sign");
 let searchHistoryEl = document.querySelector("#search-history");
 let modalEl = document.querySelector(".modal");
 let modalExitBtn = document.querySelector("close");
-let recentSearchCounter = [];
 let recentSearches = [];
 
 // call API information
@@ -20,6 +19,7 @@ let getStockTickerData = function(stockName){
         } 
     });
 };
+
 // Search Input Handler 
 let formSubmitHandler = function(event){
     event.preventDefault();
@@ -29,32 +29,43 @@ let formSubmitHandler = function(event){
     var recentSearchObj = {
         ticker: stockCallNameInput 
     };
-
+    
     if(!stockCallNameInput){
         displayModalHandler();
         return false;
     }
-
     if (recentSearches.length > 0){
-        for (let i = 0; i < recentSearches.length; i++){
-            if(stockCallNameInput == recentSearches[i].ticker){
-                console.log(recentSearches[i].ticker);
+
+        // while (recentSearches.ticker === stockCallNameInput){
+        //     console.log(recentSearches.ticker.value);
+        //     console.log("this ticker has already been searched");
+        //     console.log(recentSearchObj);
+        //     getStockTickerData(stockCallNameInput);
+        // }
+        // console.log("this hasn't been searched yet");
+        // console.log(recentSearchObj);
+        // createRecentSearchBtns(recentSearchObj);
+
+        for  (let i = 0; i < recentSearches.length; i++){
+            if(recentSearches[i] === stockCallNameInput){
+                console.log(recentSearches[i].ticker.value);
                 console.log("this ticker has already been searched");
                 console.log(recentSearchObj);
-                getStockTickerData(stockCallNameInput);
-                break;
-            } else {
-                console.log(recentSearches[i].ticker);
+                getStockTickerData(stockCallNameInput);    
+            } else if (recentSearches[i].ticker != stockCallNameInput){
                 console.log("this hasn't been searched yet");
                 console.log(recentSearchObj);
                 createRecentSearchBtns(recentSearchObj);
                 break;
-            }
+            } 
         }
+         
     } else {
-        console.log("there are no previous saved searches. this is the first search.");
-        console.log(recentSearchObj);
-        createRecentSearchBtns(recentSearchObj);
+            console.log("there are no previous saved searches. this is the first search.");
+            console.log(recentSearchObj);
+            getStockTickerData(stockCallNameInput);
+            createRecentSearchBtns(recentSearchObj);
+            
     }
 
     stockNameInputEl.value = "";
@@ -65,11 +76,15 @@ let formSubmitHandler = function(event){
 
 // dynamically create recent search buttons 
 let createRecentSearchBtns = function(recentSearchObj){
-
     // creating button element 
     var savedListItemEl = document.createElement("li");
     savedListItemEl.className = "saved-item";
-    savedListItemEl.setAttribute("search-id", recentSearchCounter);
+    savedListItemEl.addEventListener("click", function(){
+        console.log("click");
+        console.log(recentSearchObj.ticker);
+        getStockTickerData(recentSearchObj.ticker);
+
+    });
 
     var savedTickerBtnEl = document.createElement("button");
     savedTickerBtnEl.className = "saved-ticker-btn";
@@ -77,16 +92,10 @@ let createRecentSearchBtns = function(recentSearchObj){
 
     savedListItemEl.appendChild(savedTickerBtnEl);
     searchHistoryEl.appendChild(savedListItemEl);
-    // save task as an object with name and id 
-    recentSearchObj.id = recentSearchCounter;
-
-    recentSearches.push(recentSearchObj);
     
+    recentSearches.push(recentSearchObj);
+
     saveSearchInput();
-
-    // increase task counter for next task id 
-    recentSearchCounter++;
-
 };
 
 // save search input to localstorage 
@@ -105,7 +114,7 @@ let loadSearches = function(){
     savedSearches = JSON.parse(savedSearches);
     console.log(savedSearches);
     for (let i = 0; i < savedSearches.length; i++){
-        createRecentSearchBtns(savedSearches[i]);
+    createRecentSearchBtns(savedSearches[i]);
     }
 }
 

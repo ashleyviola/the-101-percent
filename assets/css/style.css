@@ -40,15 +40,6 @@ header{
     font-size: 14px;
 }
 
-#search-history{
-    list-style: none;
-    display: flex;
-    justify-content: center;
-}
-
-.saved-item{
-    padding: 0 5px;
-}
 #submitBtn {
   align-items: center;
   background-image: linear-gradient(144deg,#07F49E,#42047e);
@@ -97,6 +88,35 @@ header{
     min-width: 196px;
   }
 }
+#search-history{
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+.saved-item{
+    padding: 0 5px;
+}
+.saved-ticker-btn{
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    border: 0;
+    letter-spacing: .05rem;
+    padding: 0px 15px;
+    position: relative;
+    background: white;
+    overflow: hidden;
+    transition: .3s ease-in-out;
+    border-radius: .3rem;
+    z-index: 1;
+}
+.saved-ticker-btn:hover{
+    transform: scale(1.15);
+    color: #07F49E;
+    cursor: pointer;
+
+} 
+        
 #called-stock-container{
     background-color: white;
     width: 100%;
