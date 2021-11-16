@@ -116,7 +116,9 @@ header{
     cursor: pointer;
 
 } 
-        
+.ticker-name{
+    text-transform: uppercase;
+}     
 #called-stock-container{
     background-color: white;
     width: 100%;

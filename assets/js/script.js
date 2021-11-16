@@ -19,7 +19,10 @@ let getStockTickerData = function(stockName){
                 console.log(data);
             });
         } 
-    });
+    })
+    // .catch(err => {
+    //     err.text().then(displayModalHandler);
+    // })
 };
 
 // Search Input Handler 
@@ -37,24 +40,31 @@ let formSubmitHandler = function(event){
         return false;
     }
 
-    // if (recentSearches.indexOf(recentSearchObj) < 0){
-    //     console.log("this is a new search");
-    // } else {
-    //     console.log("this is a previous search");
-    // }
-
     if (recentSearches.length > 0){
+        
+        // if(recentSearches.indexOf(stockNameInputEl.value.trim()) > 0){
+        //     console.log(recentSearches.indexOf(stockCallNameInput));
+        //     console.log("this ticker has already been searched");
+        //     console.log(recentSearchObj);
+        //     getStockTickerData(stockCallNameInput);  
+        // } else {
+        //     console.log("this hasn't been searched yet");
+        //         console.log(recentSearchObj);
+        //         getStockTickerData(stockCallNameInput);   
+        //         createRecentSearchBtns(recentSearchObj);
+        // }
 
-        if(recentSearches.includes(stockCallNameInput)){
-            console.log("this ticker has already been searched");
-            console.log(recentSearches[i].ticker.value);
-            console.log(recentSearchObj);
-            getStockTickerData(stockCallNameInput);   
-        } else {
-            console.log("this hasn't been searched yet");
-            console.log(recentSearchObj);
-            createRecentSearchBtns(recentSearchObj);
-        }
+        // if(savedSearches.includes(stockCallNameInput)){
+        //     console.log("this ticker has already been searched");
+        //     console.log(recentSearches[i].ticker.value);
+        //     console.log(recentSearchObj);
+        //     getStockTickerData(stockCallNameInput);   
+        // } else {
+        //     console.log("this hasn't been searched yet");
+        //     console.log(recentSearchObj);
+        //     getStockTickerData(stockCallNameInput);   
+        //     createRecentSearchBtns(recentSearchObj);
+        // }
 
         //search array using while
         // while (recentSearchObj.ticker === stockCallNameInput){
@@ -71,19 +81,20 @@ let formSubmitHandler = function(event){
         //     break;
         // }
         
-        // search array using for loop
-        // for  (let i = 0; i < recentSearches.length; i++){
-        //     if(recentSearches[i].includes(stockCallNameInput)){
-                // console.log("this ticker has already been searched");
-                // console.log(recentSearches[i].ticker.value);
-                // console.log(recentSearchObj);
-                // getStockTickerData(stockCallNameInput);    
-        //     } else {
-                // console.log("this hasn't been searched yet");
-                // console.log(recentSearchObj);
-                // createRecentSearchBtns(recentSearchObj);
-                // break;
-        //     } 
+        //search array using for loop
+        for  (let i = 0; i < recentSearches.length; i++){
+            if(recentSearches[i] === stockCallNameInput){
+                console.log("this ticker has already been searched");
+                console.log(recentSearches[i].ticker.value);
+                console.log(recentSearchObj);
+                getStockTickerData(stockCallNameInput);    
+            } else {
+                console.log("this hasn't been searched yet");
+                console.log(recentSearchObj);
+                createRecentSearchBtns(recentSearchObj);
+                break;
+            } 
+        }
          
     } else {
             console.log("there are no previous saved searches. this is the first search.");
