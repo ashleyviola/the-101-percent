@@ -5,7 +5,7 @@ let searchHistoryEl = document.querySelector("#search-history");
 let modalEl = document.querySelector(".modal");
 let modalExitBtn = document.querySelector("close");
 
-// array that holds searched ticker symbols 
+// array that holds searched ticker symbols
 let recentSearches = [];
 
 // call API information
@@ -70,6 +70,10 @@ let formSubmitHandler = function(event){
     
     // clears search field 
     stockNameInputEl.value = "";
+
+    console.log(recentSearches);
+    return recentSearches
+
 };
 
 
@@ -115,6 +119,7 @@ let loadSearches = function(){
     for (let i = 0; i < savedSearches.length; i++){
     createRecentSearchBtns(savedSearches[i]);
     }
+    return savedSearches;
 }
 
 // modal functions 
