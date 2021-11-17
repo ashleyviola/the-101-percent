@@ -27,7 +27,7 @@ function getToken(url, clientID, secret) {
         }
 
         else {
-            console.log("Network Error");
+            console.log("Error");
         }
     });
 }
