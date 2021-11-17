@@ -75,8 +75,6 @@ let redditRetrieve = function(token) {
                                             // console.log(data[1].data.children[1].data.body);
                                             for (let i = 0; i < data[1].data.children.length; i++) {
                                                 let postComments = data[1].data.children[i].data.body;
-                                                if (i === 1000) { break; }
-                                                // console.log("HELLO");
 
                                                 storeData(postComments);
                                             }
@@ -101,12 +99,12 @@ let storeData = function(data) {
     let savedSearches = localStorage.getItem("stockTickers");
     savedSearches = JSON.parse(savedSearches);
 
-    if (commentData.length <= 500) {
+    if (commentData.length <= 1000) {
 
             for (let i = 0; i < hotArr.length; i++) {
                 commentData.push(hotArr[i]);
 
-                if (commentData.length >= 500) {
+                if (commentData.length >= 1000) {
                     sortData(commentData);
                     break;
                     }
@@ -129,17 +127,18 @@ let sortData = function(comments) {
     for (j = 0; j < comments.length; j++)
     {   
         if (!recentSearch[i] || !comments[j]) {
-            storeData(commentData);
+            redditRetrieve(token);
+            return;
         }
         comments[j].includes(recentSearch[i]) ? (splitData.push(comments[j])): "";
         let result = splitData
 
         if (comments[j].includes(recentSearch[i])) {
-
+            console.log(splitData);
+            getSentiment(splitData);
         }
         else if (splitData.length >= 10) {
-            getSentiment(splitData);
-            return result;
+            return splitData;
         }
                 
     }
@@ -158,7 +157,8 @@ let getSentiment = function(data) {
         else {
             getSen = "SELL";
         }
-
+        console.log(getSen);
+        createWsbSentiment(getSen);
         return getSen;
     }
 
