@@ -1,5 +1,6 @@
 let commentArr = [];
 
+
 // fetch the wallstreet bets api
 var token
 var userName = "upojT-rxULWxHaohV2favg"; // app client ID
@@ -24,6 +25,7 @@ function getToken(url, clientID, secret) {
             // console.log(token);
             redditRetrieve(token);
             return token;
+
         }
 
         else {
@@ -55,6 +57,7 @@ let redditRetrieve = function(token) {
                     response.json().then(function(data)
                     {
                         // console.log(data.data.children[0].data.id)
+
                         // for loop that finds the post id for posts in 'hot' on the wallstreetbets subreddit
                         for (let i = 0; i < data.data.children.length; i++) {
                             let postUrl = data.data.children[i].data.id
@@ -74,6 +77,7 @@ let redditRetrieve = function(token) {
                                                 let postComments = data[1].data.children[i].data.body;
                                                 if (i === 1000) { break; }
                                                 // console.log("HELLO");
+
                                                 storeData(postComments);
                                             }
                                         })
@@ -81,6 +85,7 @@ let redditRetrieve = function(token) {
                                 }
                             }
                         }
+
                     })
                 }
             })
@@ -156,6 +161,7 @@ let getSentiment = function(data) {
 
         return getSen;
     }
+
 }
 
 getToken(tokenUrl, userName, password);
