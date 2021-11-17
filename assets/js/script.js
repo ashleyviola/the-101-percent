@@ -51,12 +51,14 @@ let formSubmitHandler = function(event){
             if($(".saved-ticker-btn").hasClass(stockCallNameInput)){
                 console.log("this ticker has already been searched");
                 getStockTickerData(stockCallNameInput);
+                redditRetrieve(token);
 
             // if it is a new value calls data and creates button 
             } else {
                 console.log("this hasn't been searched yet");
                 createRecentSearchBtns(recentSearchObj);
                 getStockTickerData(stockCallNameInput);
+                redditRetrieve(token);
             }
         })
     // if this is the first value calls data and creates button 
@@ -65,6 +67,7 @@ let formSubmitHandler = function(event){
             console.log(recentSearchObj);
             getStockTickerData(stockCallNameInput);
             createRecentSearchBtns(recentSearchObj);
+            redditRetrieve(token);
             
     }
     
@@ -86,6 +89,7 @@ let createRecentSearchBtns = function(recentSearchObj){
         console.log("click");
         console.log(recentSearchObj.ticker);
         getStockTickerData(recentSearchObj.ticker);
+        redditRetrieve(token);
 
     });
 

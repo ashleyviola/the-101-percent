@@ -23,7 +23,6 @@ function getToken(url, clientID, secret) {
             key = obj.access_token; // declare and pull key from response
             token = key;
             // console.log(token);
-            redditRetrieve(token);
             return token;
 
         }
