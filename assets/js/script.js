@@ -1,3 +1,4 @@
+// global variables 
 let stockSearchEl = document.querySelector("#stock-search-form");
 let stockNameInputEl = document.querySelector("#stock-call-sign");
 let searchHistoryEl = document.querySelector("#search-history");
@@ -31,71 +32,34 @@ let formSubmitHandler = function(event){
    
     let stockCallNameInput = stockNameInputEl.value.trim();
 
+    // saves recent search to the array 
     var recentSearchObj = {
         ticker: stockCallNameInput 
     };
     
+    // calls modal if nothing is entered
     if(!stockCallNameInput){
         displayModalHandler();
         return false;
     }
-
+    
+    // checks if there are existing searches. if there are,
+    // checks if this is a new search value or duplicate 
     if (recentSearches.length > 0){
-        
-        // if(recentSearches.indexOf(stockNameInputEl.value.trim()) > 0){
-        //     console.log(recentSearches.indexOf(stockCallNameInput));
-        //     console.log("this ticker has already been searched");
-        //     console.log(recentSearchObj);
-        //     getStockTickerData(stockCallNameInput);  
-        // } else {
-        //     console.log("this hasn't been searched yet");
-        //         console.log(recentSearchObj);
-        //         getStockTickerData(stockCallNameInput);   
-        //         createRecentSearchBtns(recentSearchObj);
-        // }
-
-        // if(savedSearches.includes(stockCallNameInput)){
-        //     console.log("this ticker has already been searched");
-        //     console.log(recentSearches[i].ticker.value);
-        //     console.log(recentSearchObj);
-        //     getStockTickerData(stockCallNameInput);   
-        // } else {
-        //     console.log("this hasn't been searched yet");
-        //     console.log(recentSearchObj);
-        //     getStockTickerData(stockCallNameInput);   
-        //     createRecentSearchBtns(recentSearchObj);
-        // }
-
-        //search array using while
-        // while (recentSearchObj.ticker === stockCallNameInput){
-        //     console.log(recentSearchObj.ticker);
-        //     console.log("this ticker has already been searched");
-        //     console.log(recentSearchObj);
-        //     getStockTickerData(stockCallNameInput);
-        //     break;
-        // }
-        // while (recentSearchObj.ticker != stockCallNameInput){
-        //     console.log("this hasn't been searched yet");
-        //     console.log(recentSearchObj);
-        //     createRecentSearchBtns(recentSearchObj);
-        //     break;
-        // }
-        
-        //search array using for loop
-        for  (let i = 0; i < recentSearches.length; i++){
-            if(recentSearches[i] === stockCallNameInput){
+        $('#search-history').each(function(){
+            // if it isn't a new value calls data without creating button
+            if($(".saved-ticker-btn").hasClass(stockCallNameInput)){
                 console.log("this ticker has already been searched");
-                console.log(recentSearches[i].ticker.value);
-                console.log(recentSearchObj);
-                getStockTickerData(stockCallNameInput);    
+                getStockTickerData(stockCallNameInput);
+
+            // if it is a new value calls data and creates button 
             } else {
                 console.log("this hasn't been searched yet");
-                console.log(recentSearchObj);
                 createRecentSearchBtns(recentSearchObj);
-                break;
-            } 
-        }
-         
+                getStockTickerData(stockCallNameInput);
+            }
+        })
+    // if this is the first value calls data and creates button 
     } else {
             console.log("there are no previous saved searches. this is the first search.");
             console.log(recentSearchObj);
@@ -103,10 +67,9 @@ let formSubmitHandler = function(event){
             createRecentSearchBtns(recentSearchObj);
             
     }
-
+    
+    // clears search field 
     stockNameInputEl.value = "";
-
-    console.log(recentSearches);
 };
 
 
@@ -114,7 +77,7 @@ let formSubmitHandler = function(event){
 let createRecentSearchBtns = function(recentSearchObj){
     // creating button element 
     var savedListItemEl = document.createElement("li");
-    savedListItemEl.className = "saved-item";
+    savedListItemEl.className = "saved-item" ;
     savedListItemEl.addEventListener("click", function(){
         console.log("click");
         console.log(recentSearchObj.ticker);
@@ -123,9 +86,9 @@ let createRecentSearchBtns = function(recentSearchObj){
     });
 
     var savedTickerBtnEl = document.createElement("button");
-    savedTickerBtnEl.className = "saved-ticker-btn";
+    savedTickerBtnEl.className = "saved-ticker-btn "+recentSearchObj.ticker;
     savedTickerBtnEl.innerHTML = "<p class='ticker-name'>" + recentSearchObj.ticker + "</p>";
-
+    console.log(savedTickerBtnEl);
     savedListItemEl.appendChild(savedTickerBtnEl);
     searchHistoryEl.appendChild(savedListItemEl);
     

@@ -51,14 +51,12 @@ let redditRetrieve = function(token) {
                 if (response.ok) {
                     response.json().then(function(data)
                     {
-                        console.log(data.data.children[0].data.id)
                         // for loop that finds the post id for posts in 'hot' on the wallstreetbets subreddit
                         for (let i = 0; i < data.data.children.length; i++) {
                             let postUrl = data.data.children[i].data.id
                             postIds.push(postUrl);
 
                             let newUrl = 'https://oauth.reddit.com/r/wallstreetbets/comments/' + postUrl;
-                            console.log(newUrl);
                                 if (newUrl) {
                                     fetch(newUrl, otherPram).then(function (response) {
                                         response.json().then(function(data) {
@@ -92,7 +90,6 @@ let storeData = function(data) {
             commentData.push(wsbComments);
             
     }
-    console.log(commentData)
     return commentData;
 }
 
