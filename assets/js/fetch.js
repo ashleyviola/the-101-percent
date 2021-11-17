@@ -111,7 +111,7 @@ let storeData = function(data) {
 }
 
 let sortData = function(comments) {
-
+    let commentData = commentArr;
     let result;
     let recentSearch = [];
     let splitData = [];
@@ -130,7 +130,7 @@ let sortData = function(comments) {
         let result = splitData
 
         if (comments[j].includes(recentSearch[i])) {
-            console.log(splitData);
+
         }
         else if (splitData.length >= 10) {
             getSentiment(splitData);
@@ -143,17 +143,17 @@ let sortData = function(comments) {
 }
 
 let getSentiment = function(data) {
-    let getSen = 0;
+    let getSen = "";
 
     for (i = 0; i < data.length; i++) {
         let indStr = data[i];
         if (indStr.includes("buy" || "huge" || "moon" || "big" || "green" || "returns" || "bullish" || "bulls" || "🚀")) {
-            getSen = 1;
+            getSen = "BUY";
         }
         else {
-            getSen = 0;
+            getSen = "SELL";
         }
-        console.log(getSen);
+
         return getSen;
     }
 }
