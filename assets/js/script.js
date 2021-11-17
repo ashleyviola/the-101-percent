@@ -135,6 +135,41 @@ let createRecentSearchBtns = function(recentSearchObj){
     saveSearchInput();
 };
 
+let createWsbSentiment = function(sentiment){
+
+    let senText = document.querySelector("#sentiment");
+    let randText = "";
+
+    let fillerText = ["WallstreetBets Says ",
+    "The Degenerates Say ",
+    "Reddit Says ",
+    "The Internet Gamblers Have SPOKEN: "];
+
+    for (i = 0; i < fillerText.length; i++) {
+        let chooseText = "";
+        randText = (Math.floor(Math.random() * 10));
+
+        if (randText <= 2) {
+            (chooseText = fillerText[0])
+            senText.value = (chooseText += sentiment);
+        }
+        else if (randText <= 4) {
+            chooseText = fillerText[1]
+            senText.value = (chooseText += sentiment);
+        }
+        else if (randText >= 6) {
+            chooseText = fillerText[2]
+            senText.value = (chooseText += sentiment);
+        }
+        else {
+            chooseText = fillerText[3];
+            senText.value = (chooseText += sentiment);
+        }
+        console.log(chooseText);
+        return chooseText;
+    }
+}
+
 // save search input to localstorage 
 let saveSearchInput = function(){
     localStorage.setItem("stockTickers", JSON.stringify(recentSearches));
