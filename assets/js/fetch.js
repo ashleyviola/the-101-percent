@@ -1,6 +1,5 @@
 let commentArr = [];
 
-
 // fetch the wallstreet bets api
 var token
 var userName = "upojT-rxULWxHaohV2favg"; // app client ID
@@ -28,15 +27,22 @@ function getToken(url, clientID, secret) {
 
         }
 
-        else {
-            console.log("Network Error");
+//making a get request
+    fetch(apiUrl)
+    .then(function(response) {
+        //request was successful
+        if(response.ok) {
+            console.log(response);
+            response.json().then(function(data) {
+            console.log(data);
+            
+            });
+        } else {
+            alert("Error, Please Enter a valid ticker." + response.statusText);
         }
-    });
+    })
+});
 }
-// the standard fetch function for retrieve data from the wsb subreddit
-let redditRetrieve = function(token) {
-    let postIds = [];
-
     if (token) {
         let url = 'https://oauth.reddit.com/r/wallstreetbets/hot'; // url variable used to fetch wsb subreddit
         let data ={
@@ -87,8 +93,12 @@ let redditRetrieve = function(token) {
                     })
                 }
             })
+        }
 
-    }
+var displayStocks = function() {
+    if (response[i].symbol = "APPL");
+    var comments = response[i].matchScore;
+    console.log(data);
 }
 // the store function for pulling comment and post data from the wsb subreddit
 let storeData = function(data) {
@@ -162,6 +172,19 @@ let getSentiment = function(data) {
         return getSen;
     }
 
+};
+
+// Sort Data Here
+
+//check api returns
+var getTickerData = function(ticker) {
+    if (ticker.length === 0) {
+        symbol.textContent = "No ticker found.";
+        return;
+
+    }
 }
 
-getToken(tokenUrl, userName, password);
+//for (var i = 0; i < ticker.length; i++) {
+    
+//
