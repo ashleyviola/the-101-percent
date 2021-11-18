@@ -4,6 +4,7 @@ let stockNameInputEl = document.querySelector("#stock-call-sign");
 let searchHistoryEl = document.querySelector("#search-history");
 let modalEl = document.querySelector(".modal");
 let modalExitBtn = document.querySelector("close");
+let ticker;
 
 // array that holds searched ticker symbols
 let recentSearches = [];
@@ -21,6 +22,8 @@ let getStockTickerData = function(stockName){
             });
         } 
     })
+    ticker = stockName;
+    return ticker;
     // .catch(err => {
     //     err.text().then(displayModalHandler);
     // })
@@ -51,14 +54,14 @@ let formSubmitHandler = function(event){
             if($(".saved-ticker-btn").hasClass(stockCallNameInput)){
                 console.log("this ticker has already been searched");
                 getStockTickerData(stockCallNameInput);
-                redditRetrieve(token);
+                redditRetrieve(token, stockCallNameInput);
 
             // if it is a new value calls data and creates button 
             } else {
                 console.log("this hasn't been searched yet");
                 createRecentSearchBtns(recentSearchObj);
                 getStockTickerData(stockCallNameInput);
-                redditRetrieve(token);
+                redditRetrieve(token, stockCallNameInput);
             }
         })
     // if this is the first value calls data and creates button 
@@ -67,7 +70,7 @@ let formSubmitHandler = function(event){
             console.log(recentSearchObj);
             getStockTickerData(stockCallNameInput);
             createRecentSearchBtns(recentSearchObj);
-            redditRetrieve(token);
+            redditRetrieve(token, stockCallNameInput);
             
     }
     
@@ -135,7 +138,6 @@ let createWsbSentiment = function(sentiment){
             chooseText = fillerText[3];
             senText.value = (chooseText += sentiment);
         }
-        console.log(chooseText);
         return chooseText;
     }
 }

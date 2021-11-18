@@ -1,3 +1,6 @@
+var value = document.querySelector("#stock-call-sign");
+let searchEl = document.querySelector("#stock-search-form");
+
 let commentArr = [];
 
 
@@ -116,40 +119,30 @@ let storeData = function(data) {
 }
 
 let sortData = function(comments) {
+    console.log(ticker);
     let commentData = commentArr;
     // create new empty variables and arrays for userInput and Data splitting
     let result;
-    let recentSearch = [];
     let splitData = [];
     // retrieve recently searched tickers from local storage
-    let savedSearches = localStorage.getItem("stockTickers");
-    savedSearches = JSON.parse(savedSearches);
 
-    for (i = 0; i < savedSearches.length; i++)
-    {
-        recentSearch.push(savedSearches[i].ticker);
-        // push tickers from local storage to new array
-    for (j = 0; j < comments.length; j++)
-    {   
-        if (!recentSearch[i] || !comments[j]) {
-            // if the fetch failed to retrieve comments try again
-            redditRetrieve(token);
-            return;
-        }
-        // check to see if any of the comments from reddit contain the ticker the user is looking for
-        comments[j].includes(recentSearch[i]) ? (splitData.push(comments[j])): "";
-        let result = splitData
-        // if they do then call the getSentiment() function with the result (array of comments containing ticker data)
-        if (comments[j].includes(recentSearch[i])) {
-            getSentiment(result);
-        }
-        else if (splitData.length >= 10) {
-            return result;
-        }
+        comments.forEach(function(comment){
+            // console.log(comment);
+
+            if (comment.includes(ticker) != undefined) {
                 
-    }
-    }
-    
+            }
+            if (comment.includes(ticker)) {
+                splitData.push(comment)
+            }
+            else if (!comment.includes(ticker)) {
+                
+            }
+            console.log(splitData);
+            getSentiment(splitData);
+    })
+ 
+    console.log(splitData)
 }
 
 let getSentiment = function(data) {
@@ -167,12 +160,16 @@ let getSentiment = function(data) {
         // if they do not contain those keywords the sentiment is negative
             getSen = "SELL";
         }
-        console.log(getSen);
         // call the createWsbSentiment in script.js with this data
         createWsbSentiment(getSen);
+        console.log(getSen);
         return getSen;
     }
 
 }
 
+
+
 getToken(tokenUrl, userName, password);
+
+searchEl.addEventListener("submit",formSubmitHandler);
