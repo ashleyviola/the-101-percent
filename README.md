@@ -23,6 +23,9 @@ Our app collects online data and displays a users specified stock current pricin
 - script.js 
 - fetch.js 
 
+## Example of Functionality 
+![The One Hundred and One Percent Preview](./assets/images/theonehundredandonepercent.gif)
+
 ## Instructions 
 1. Fork and clone repository
 2. Create directory under /develop
