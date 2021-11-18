@@ -35,7 +35,6 @@ let getStockData = function(stockName){
 
 };
 
-
 // Search Input Handler 
 let formSubmitHandler = function(event){
     event.preventDefault();
@@ -43,8 +42,6 @@ let formSubmitHandler = function(event){
     let stockCallNameInput = stockNameInputEl.value.trim();
 
     document.getElementById("called-stock-container").style.display="block";
-
-
 
     // saves recent search to the array 
     var recentSearchObj = {
@@ -65,20 +62,26 @@ let formSubmitHandler = function(event){
             if($(".saved-ticker-btn").hasClass(stockCallNameInput)){
                 console.log("this ticker has already been searched");
                 getStockData(stockCallNameInput);
+                redditRetrieve(token);
 
             // if it is a new value calls data and creates button 
             } else {
                 console.log("this hasn't been searched yet");
                 createRecentSearchBtns(recentSearchObj);
+
                 getStockData(stockCallNameInput);
+                redditRetrieve(token);
             }
         })
     // if this is the first value calls data and creates button 
     } else {
             console.log("there are no previous saved searches. this is the first search.");
             console.log(recentSearchObj);
+
             getStockData(stockCallNameInput);
-            createRecentSearchBtns(recentSearchObj);            
+            createRecentSearchBtns(recentSearchObj);
+            redditRetrieve(token);
+            
     }
     
     // clears search field 
@@ -97,7 +100,9 @@ let createRecentSearchBtns = function(recentSearchObj){
     savedListItemEl.addEventListener("click", function(){
         console.log("click");
         console.log(recentSearchObj.ticker);
+
         getStockData(recentSearchObj.ticker);
+        redditRetrieve(token);
         document.getElementById("called-stock-container").style.display="block";
     });
 

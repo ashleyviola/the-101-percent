@@ -22,23 +22,11 @@ function getToken(url, clientID, secret) {
             key = obj.access_token; // declare and pull key from response
             token = key;
             // console.log(token);
-            redditRetrieve(token);
             return token;
 
         }
-
-//making a get request
-    fetch(apiUrl)
-    .then(function(response) {
-        //request was successful
-        if(response.ok) {
-            console.log(response);
-            response.json().then(function(data) {
-            console.log(data);
-            
-            });
-        } else {
-            alert("Error, Please Enter a valid ticker." + response.statusText);
+        else {
+            console.log("Error");
         }
     })
 });
@@ -61,26 +49,27 @@ function getToken(url, clientID, secret) {
             .then(function (response) {
                 if (response.ok) {
                     response.json().then(function(data)
-                    {
-                        // console.log(data.data.children[0].data.id)
+                    { // cycle through post data received from reddit to obtain the post ids of the posts in HOT
 
                         // for loop that finds the post id for posts in 'hot' on the wallstreetbets subreddit
                         for (let i = 0; i < data.data.children.length; i++) {
                             let postUrl = data.data.children[i].data.id
                             postIds.push(postUrl);
                             if (postIds.length > 10) {
+                                // stop after 10 post IDs
                                 return postIds;
                             }
-                            // console.log(postIds);
 
+                            // cycle through the post IDs creating a new fetch url for each post
                             for (let x = 0; x < postIds.length; x++) {
                                 let newUrl = 'https://oauth.reddit.com/r/wallstreetbets/comments/' + postIds[x];
                                 if (newUrl) {
+                                    // fetch the post urls and cycle through to find the comments in each post
                                     fetch(newUrl, otherPram).then(function (response) {
                                         response.json().then(function(data) {
-                                            // console.log(data[1].data.children[1].data.body);
                                             for (let i = 0; i < data[1].data.children.length; i++) {
                                                 let postComments = data[1].data.children[i].data.body;
+                                                // send the postComments to the storeData() function
 
                                                 storeData(postComments);
                                             }
@@ -112,9 +101,11 @@ let storeData = function(data) {
     if (commentData.length <= 1000) {
 
             for (let i = 0; i < hotArr.length; i++) {
+                // push each comment into the commentData array
                 commentData.push(hotArr[i]);
 
                 if (commentData.length >= 1000) {
+                    // if the fetch pulls over 1000 comments stop adding new comments and call the sortData() function
                     sortData(commentData);
                     break;
                     }
@@ -125,30 +116,34 @@ let storeData = function(data) {
 
 let sortData = function(comments) {
     let commentData = commentArr;
+    // create new empty variables and arrays for userInput and Data splitting
     let result;
     let recentSearch = [];
     let splitData = [];
+    // retrieve recently searched tickers from local storage
     let savedSearches = localStorage.getItem("stockTickers");
     savedSearches = JSON.parse(savedSearches);
 
     for (i = 0; i < savedSearches.length; i++)
     {
         recentSearch.push(savedSearches[i].ticker);
+        // push tickers from local storage to new array
     for (j = 0; j < comments.length; j++)
     {   
         if (!recentSearch[i] || !comments[j]) {
+            // if the fetch failed to retrieve comments try again
             redditRetrieve(token);
             return;
         }
+        // check to see if any of the comments from reddit contain the ticker the user is looking for
         comments[j].includes(recentSearch[i]) ? (splitData.push(comments[j])): "";
         let result = splitData
-
+        // if they do then call the getSentiment() function with the result (array of comments containing ticker data)
         if (comments[j].includes(recentSearch[i])) {
-            console.log(splitData);
-            getSentiment(splitData);
+            getSentiment(result);
         }
         else if (splitData.length >= 10) {
-            return splitData;
+            return result;
         }
                 
     }
@@ -157,17 +152,22 @@ let sortData = function(comments) {
 }
 
 let getSentiment = function(data) {
+    // create an empty string that will become sentiment value
     let getSen = "";
 
     for (i = 0; i < data.length; i++) {
+        // create variable called indStr for each individual string data holds
         let indStr = data[i];
+        // check if the strings contain keywords that would infer the response is positive
         if (indStr.includes("buy" || "huge" || "moon" || "big" || "green" || "returns" || "bullish" || "bulls" || "🚀")) {
             getSen = "BUY";
         }
         else {
+        // if they do not contain those keywords the sentiment is negative
             getSen = "SELL";
         }
         console.log(getSen);
+        // call the createWsbSentiment in script.js with this data
         createWsbSentiment(getSen);
         return getSen;
     }
