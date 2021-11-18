@@ -1,8 +1,7 @@
-var value = document.querySelector("#stock-call-sign");
-let searchEl = document.querySelector("#stock-search-form");
-
 let commentArr = [];
-
+let posSen = 0;
+let negSen = 0;
+var sentiment;
 
 // fetch the wallstreet bets api
 var token
@@ -31,7 +30,7 @@ function getToken(url, clientID, secret) {
         }
 
         else {
-            console.log("Network Error");
+            console.log("Error");
         }
     });
 }
@@ -57,26 +56,27 @@ let redditRetrieve = function(token) {
             .then(function (response) {
                 if (response.ok) {
                     response.json().then(function(data)
-                    {
-                        // console.log(data.data.children[0].data.id)
+                    { // cycle through post data received from reddit to obtain the post ids of the posts in HOT
 
                         // for loop that finds the post id for posts in 'hot' on the wallstreetbets subreddit
                         for (let i = 0; i < data.data.children.length; i++) {
                             let postUrl = data.data.children[i].data.id
                             postIds.push(postUrl);
                             if (postIds.length > 10) {
+                                // stop after 10 post IDs
                                 return postIds;
                             }
-                            // console.log(postIds);
 
+                            // cycle through the post IDs creating a new fetch url for each post
                             for (let x = 0; x < postIds.length; x++) {
                                 let newUrl = 'https://oauth.reddit.com/r/wallstreetbets/comments/' + postIds[x];
                                 if (newUrl) {
+                                    // fetch the post urls and cycle through to find the comments in each post
                                     fetch(newUrl, otherPram).then(function (response) {
                                         response.json().then(function(data) {
-                                            // console.log(data[1].data.children[1].data.body);
                                             for (let i = 0; i < data[1].data.children.length; i++) {
                                                 let postComments = data[1].data.children[i].data.body;
+                                                // send the postComments to the storeData() function
 
                                                 storeData(postComments);
                                             }
@@ -101,12 +101,14 @@ let storeData = function(data) {
     let savedSearches = localStorage.getItem("stockTickers");
     savedSearches = JSON.parse(savedSearches);
 
-    if (commentData.length <= 1000) {
+    if (commentData.length <= 3000) {
 
             for (let i = 0; i < hotArr.length; i++) {
+                // push each comment into the commentData array
                 commentData.push(hotArr[i]);
 
-                if (commentData.length >= 1000) {
+                if (commentData.length >= 3000) {
+                    // if the fetch pulls over 1000 comments stop adding new comments and call the sortData() function
                     sortData(commentData);
                     break;
                     }
@@ -116,61 +118,48 @@ let storeData = function(data) {
 }
 
 let sortData = function(comments) {
-    console.log(ticker);
-    let commentData = commentArr;
-    let result;
     let splitData = [];
-    let savedSearches = localStorage.getItem("stockTickers");
-    savedSearches = JSON.parse(savedSearches);
-
-    for (i = 0; i < savedSearches.length; i++)
-    {
-        recentSearch.push(savedSearches[i].ticker);
-    for (j = 0; j < comments.length; j++)
-    {   
-        if (!recentSearch[i] || !comments[j]) {
-            redditRetrieve(token);
-            return;
+    comments.map((item, index, arr) => {
+        if (!arr[index +1] && index < arr.length-1) arr[index+1] = "empty"; {
         }
-        comments[j].includes(recentSearch[i]) ? (splitData.push(comments[j])): "";
-        let result = splitData
-
-        if (comments[j].includes(recentSearch[i])) {
-            console.log(splitData);
-            getSentiment(splitData);
+        if (item.includes(ticker)) {
+            splitData.push(item);
         }
-        else if (splitData.length >= 10) {
-            return splitData;
-        }
-            console.log(splitData);
-            getSentiment(splitData);
-    }
-    }
- 
-    console.log(splitData)
+      
+    });
+    getSentiment(splitData);
 }
 
 let getSentiment = function(data) {
-    let getSen = "";
 
-    for (i = 0; i < data.length; i++) {
-        let indStr = data[i];
-        if (indStr.includes("buy" || "huge" || "moon" || "big" || "green" || "returns" || "bullish" || "bulls" || "🚀")) {
-            getSen = "BUY";
+    data.forEach(item => {
+        // check if the strings contain keywords that would infer the response is positive
+        if (item.includes("buy" || "huge" || "moon" || "big" || "green" || "returns" || "bullish" || "bulls" || "🚀" || "pump")) {
+            posSen++;
+            console.log(item);
         }
-        else {
-            getSen = "SELL";
+        if (item.includes("sell" || "candles" || "small" || "loss" || "bad" || "red" || "lose" || "sold" || "bear" || "bearish")) {
+            negSen--;
+            console.log(item);
         }
-        console.log(getSen);
-        createWsbSentiment(getSen);
-        console.log(getSen);
-        return getSen;
+    });
+
+    if (posSen >= negSen) {
+        sentiment = "BUY"
     }
-
+    if (negSen >= posSen) {
+        sentiment = "SELL"
+    }
+    if (negSen === 0 && posSen === 0) {
+        sentiment = "WALLSTREETBETS DOESN'T CARE ABOUT THIS STOCK"
+    }
+    createWsbSentiment(sentiment);
 }
-
-
 
 getToken(tokenUrl, userName, password);
 
-searchEl.addEventListener("submit",formSubmitHandler);
+stockSearchEl.addEventListener("submit",getToken(tokenUrl, userName, password), function() {
+    posSen = 0;
+    negSen = 0;
+    redditRetrieve();
+});

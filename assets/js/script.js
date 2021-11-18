@@ -7,38 +7,17 @@ let modalEl = document.querySelector(".modal");
 let wallStreetBetEl = document.querySelector("#wsb");
 let errorModelEl = document.querySelector(".errorModal");
 let modalExitBtn = document.querySelector("close");
-<<<<<<< HEAD
-let ticker;
-=======
+
+let ticker
+
 let todaysDate = moment().format('YYYY-MM-DD');
 
 // alphavantage apiKey
 apiKey = "XY2QN2G7T7ZHKP88"
->>>>>>> 58c0662580179e3198e534e0d26531a69f281706
-
 // array that holds searched ticker symbols
 let recentSearches = [];
 
 // call API information
-<<<<<<< HEAD
-let getStockTickerData = function(stockName){
-    apiKey = "XY2QN2G7T7ZHKP88"
-    var apiUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+ stockName + "&apikey=" + apiKey;
-
-    fetch(apiUrl)
-    .then(function(response){
-        if(response.ok){
-            response.json().then(function(data){
-                console.log(data);
-            });
-        } 
-    })
-    ticker = stockName;
-    return ticker;
-    // .catch(err => {
-    //     err.text().then(displayModalHandler);
-    // })
-=======
 let getStockData = function(stockName){
     let priceApiUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+ stockName + "&apikey=" + apiKey;
     let overviewDataApiUrl = "https://www.alphavantage.co/query?function=OVERVIEW&symbol="+ stockName +"&apikey=" + apiKey;
@@ -55,8 +34,9 @@ let getStockData = function(stockName){
     }).catch(function(){
         displayErrorModalHandler();
     });
+    ticker = stockName;
+    return ticker;
 
->>>>>>> 58c0662580179e3198e534e0d26531a69f281706
 };
 
 // Search Input Handler 
@@ -85,26 +65,17 @@ let formSubmitHandler = function(event){
             // if it isn't a new value calls data without creating button
             if($(".saved-ticker-btn").hasClass(stockCallNameInput)){
                 console.log("this ticker has already been searched");
-<<<<<<< HEAD
-                getStockTickerData(stockCallNameInput);
-                redditRetrieve(token, stockCallNameInput);
-=======
+
                 getStockData(stockCallNameInput);
                 redditRetrieve(token);
->>>>>>> 58c0662580179e3198e534e0d26531a69f281706
 
             // if it is a new value calls data and creates button 
             } else {
                 console.log("this hasn't been searched yet");
                 createRecentSearchBtns(recentSearchObj);
-<<<<<<< HEAD
-                getStockTickerData(stockCallNameInput);
-                redditRetrieve(token, stockCallNameInput);
-=======
 
                 getStockData(stockCallNameInput);
                 redditRetrieve(token);
->>>>>>> 58c0662580179e3198e534e0d26531a69f281706
             }
         })
     // if this is the first value calls data and creates button 
