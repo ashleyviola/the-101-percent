@@ -29,10 +29,7 @@ let getStockData = function(stockName){
         }));
     }).then(function(data){
         createStockInfo(data, stockName);
-    }).catch(function(){
-        displayErrorModalHandler();
     });
-
 };
 
 // Search Input Handler 
@@ -102,8 +99,8 @@ let createRecentSearchBtns = function(recentSearchObj){
         console.log(recentSearchObj.ticker);
 
         getStockData(recentSearchObj.ticker);
-        redditRetrieve(token);
         document.getElementById("called-stock-container").style.display="block";
+        redditRetrieve(token);
     });
 
     var savedTickerBtnEl = document.createElement("button");
@@ -270,9 +267,6 @@ let loadSearches = function(){
 // modal functions 
 let displayModalHandler = function(){
     modalEl.style.display = "block";
-};
-let displayErrorModalHandler = function(){
-    errorModelEl.style.display = "block";
 };
 
 let exitModalHandler = function(){

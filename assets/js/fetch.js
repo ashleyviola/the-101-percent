@@ -29,8 +29,8 @@ function getToken(url, clientID, secret) {
             console.log("Error");
         }
     })
-});
-}
+};
+
     if (token) {
         let url = 'https://oauth.reddit.com/r/wallstreetbets/hot'; // url variable used to fetch wsb subreddit
         let data ={
