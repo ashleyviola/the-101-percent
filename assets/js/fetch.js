@@ -26,7 +26,6 @@ function getToken(url, clientID, secret) {
             key = obj.access_token; // declare and pull key from response
             token = key;
             // console.log(token);
-            redditRetrieve(token);
             return token;
 
         }
@@ -121,14 +120,6 @@ let sortData = function(comments) {
     let commentData = commentArr;
     let result;
     let splitData = [];
-<<<<<<< HEAD
-    // retrieve recently searched tickers from local storage
-
-        comments.forEach(function(comment){
-            // console.log(comment);
-
-            if (comment.includes(ticker) != undefined) {
-=======
     let savedSearches = localStorage.getItem("stockTickers");
     savedSearches = JSON.parse(savedSearches);
 
@@ -151,18 +142,10 @@ let sortData = function(comments) {
         else if (splitData.length >= 10) {
             return splitData;
         }
->>>>>>> 58c0662580179e3198e534e0d26531a69f281706
-                
-            }
-            if (comment.includes(ticker)) {
-                splitData.push(comment)
-            }
-            else if (!comment.includes(ticker)) {
-                
-            }
             console.log(splitData);
             getSentiment(splitData);
-    })
+    }
+    }
  
     console.log(splitData)
 }
@@ -178,11 +161,7 @@ let getSentiment = function(data) {
         else {
             getSen = "SELL";
         }
-<<<<<<< HEAD
-        // call the createWsbSentiment in script.js with this data
-=======
         console.log(getSen);
->>>>>>> 58c0662580179e3198e534e0d26531a69f281706
         createWsbSentiment(getSen);
         console.log(getSen);
         return getSen;
