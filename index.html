@@ -9,7 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>    
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">    
     <link rel="stylesheet" href="./assets/css/style.css" >
-    <title>Document</title>
+    <title>The One Hundred and One Percent</title>
+    <link rel="shortcut icon" type="image/png" href="./assets/images/favicon-32x32.png">
 </head>
 <body>
     <!-- Page Header  -->
@@ -29,16 +30,16 @@
         </div>
         
         <!-- Called Stock Data -->
-        <div id="called-stock-container">
+        <div id="called-stock-container" style = "display: none">
             <br>
         </div>
         
         <!-- rWallstreetBets Buy/Don't Buy -->
-        <div>
-        </div>
-       
-        <!-- rStocks Buy/Don't Buy -->
-        <div>
+        <div id="wsb">
+            <br>
+            <textarea readonly id ="sentiment" placeholder="Find out What /r/WallstreetBets thinks!" aria-label="Generated Sentiment">
+            </textarea>
+            
         </div>
 
         <!-- Empty or Wrong Search Parameters Modal -->
@@ -48,9 +49,17 @@
                 <p>Please enter a valid ticker symbol.</p>
             </div>
         </div>
+        <!-- API Capacity -->
+        <div id="errorModal" class="modal is-hidden is-visuallyHidden">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>You've reached your search limit. Please wait 1 minute before executing another search.</p>
+            </div>
+        </div>
     </main>
 
     <!-- Page Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.1/papaparse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="./assets/js/fetch.js"></script>
