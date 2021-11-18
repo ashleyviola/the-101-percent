@@ -9,7 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>    
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">    
     <link rel="stylesheet" href="./assets/css/style.css" >
-    <title>Document</title>
+    <title>The One Hundred and One Percent</title>
+    <link rel="shortcut icon" type="image/png" href="./assets/images/favicon-32x32.png">
 </head>
 <body>
     <!-- Page Header  -->
@@ -29,7 +30,7 @@
         </div>
         
         <!-- Called Stock Data -->
-        <div id="called-stock-container">
+        <div id="called-stock-container" style = "display: none">
             <br>
         </div>
         
@@ -40,16 +41,19 @@
             </textarea>
             
         </div>
-       
-        <!-- rStocks Buy/Don't Buy -->
-        <div>
-        </div>
 
         <!-- Empty or Wrong Search Parameters Modal -->
         <div id="searchModal" class="modal is-hidden is-visuallyHidden">
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <p>Please enter a valid ticker symbol.</p>
+            </div>
+        </div>
+        <!-- API Capacity -->
+        <div id="errorModal" class="modal is-hidden is-visuallyHidden">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>You've reached your search limit. Please wait 1 minute before executing another search.</p>
             </div>
         </div>
     </main>
