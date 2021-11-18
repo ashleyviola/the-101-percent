@@ -97,10 +97,10 @@ let createRecentSearchBtns = function(recentSearchObj){
     savedListItemEl.addEventListener("click", function(){
         console.log("click");
         console.log(recentSearchObj.ticker);
-
+        
+        redditRetrieve(token);
         getStockData(recentSearchObj.ticker);
         document.getElementById("called-stock-container").style.display="block";
-        redditRetrieve(token);
     });
 
     var savedTickerBtnEl = document.createElement("button");
