@@ -1,5 +1,7 @@
 let commentArr = [];
-
+let posSen = 0;
+let negSen = 0;
+var sentiment;
 
 // fetch the wallstreet bets api
 var token
@@ -99,13 +101,13 @@ let storeData = function(data) {
     let savedSearches = localStorage.getItem("stockTickers");
     savedSearches = JSON.parse(savedSearches);
 
-    if (commentData.length <= 1000) {
+    if (commentData.length <= 3000) {
 
             for (let i = 0; i < hotArr.length; i++) {
                 // push each comment into the commentData array
                 commentData.push(hotArr[i]);
 
-                if (commentData.length >= 1000) {
+                if (commentData.length >= 3000) {
                     // if the fetch pulls over 1000 comments stop adding new comments and call the sortData() function
                     sortData(commentData);
                     break;
@@ -116,63 +118,54 @@ let storeData = function(data) {
 }
 
 let sortData = function(comments) {
-    let commentData = commentArr;
-    // create new empty variables and arrays for userInput and Data splitting
-    let result;
-    let recentSearch = [];
+    console.log(ticker);
     let splitData = [];
-    // retrieve recently searched tickers from local storage
-    let savedSearches = localStorage.getItem("stockTickers");
-    savedSearches = JSON.parse(savedSearches);
-
-    for (i = 0; i < savedSearches.length; i++)
-    {
-        recentSearch.push(savedSearches[i].ticker);
-        // push tickers from local storage to new array
-    for (j = 0; j < comments.length; j++)
-    {   
-        if (!recentSearch[i] || !comments[j]) {
-            // if the fetch failed to retrieve comments try again
-            redditRetrieve(token);
-            return;
+    comments.map((item, index, arr) => {
+        if (!arr[index +1] && index < arr.length-1) arr[index+1] = "empty"; {
         }
-        // check to see if any of the comments from reddit contain the ticker the user is looking for
-        comments[j].includes(recentSearch[i]) ? (splitData.push(comments[j])): "";
-        let result = splitData
-        // if they do then call the getSentiment() function with the result (array of comments containing ticker data)
-        if (comments[j].includes(recentSearch[i])) {
-            getSentiment(result);
+        if (item.includes(ticker)) {
+            splitData.push(item);
         }
-        else if (splitData.length >= 10) {
-            return result;
-        }
-                
-    }
-    }
+      
+    });
+    getSentiment(splitData);
+    console.log(splitData);
     
 }
 
 let getSentiment = function(data) {
-    // create an empty string that will become sentiment value
-    let getSen = "";
 
-    for (i = 0; i < data.length; i++) {
-        // create variable called indStr for each individual string data holds
-        let indStr = data[i];
+    data.forEach(item => {
         // check if the strings contain keywords that would infer the response is positive
-        if (indStr.includes("buy" || "huge" || "moon" || "big" || "green" || "returns" || "bullish" || "bulls" || "🚀")) {
-            getSen = "BUY";
+        if (item.includes("buy" || "huge" || "moon" || "big" || "green" || "returns" || "bullish" || "bulls" || "🚀" || "pump")) {
+            posSen++;
+            console.log(item);
         }
-        else {
-        // if they do not contain those keywords the sentiment is negative
-            getSen = "SELL";
+        if (item.includes("sell" || "candles" || "small" || "loss" || "bad" || "red" || "lose" || "sold" || "bear" || "bearish")) {
+            negSen--;
+            console.log(item);
         }
-        console.log(getSen);
-        // call the createWsbSentiment in script.js with this data
-        createWsbSentiment(getSen);
-        return getSen;
+    });
+
+    if (posSen >= negSen) {
+        sentiment = "BUY"
     }
+    if (negSen >= posSen) {
+        sentiment = "SELL"
+    }
+    if (negSen === 0 && posSen === 0) {
+        sentiment = "WALLSTREETBETS DOESN'T CARE ABOUT THIS STOCK"
+    }
+
+    console.log(sentiment);
+    createWsbSentiment(sentiment);
 
 }
 
 getToken(tokenUrl, userName, password);
+
+stockSearchEl.addEventListener("submit",getToken(tokenUrl, userName, password), function() {
+    posSen = 0;
+    negSen = 0;
+    redditRetrieve();
+});

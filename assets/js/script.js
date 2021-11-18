@@ -4,7 +4,7 @@ let stockNameInputEl = document.querySelector("#stock-call-sign");
 let searchHistoryEl = document.querySelector("#search-history");
 let modalEl = document.querySelector(".modal");
 let modalExitBtn = document.querySelector("close");
-
+let ticker
 // array that holds searched ticker symbols
 let recentSearches = [];
 
@@ -21,6 +21,8 @@ let getStockTickerData = function(stockName){
             });
         } 
     })
+    ticker = stockName;
+    return ticker;
     // .catch(err => {
     //     err.text().then(displayModalHandler);
     // })
@@ -135,7 +137,6 @@ let createWsbSentiment = function(sentiment){
             chooseText = fillerText[3];
             senText.value = (chooseText += sentiment);
         }
-        console.log(chooseText);
         return chooseText;
     }
 }
