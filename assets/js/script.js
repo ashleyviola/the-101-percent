@@ -31,8 +31,6 @@ let getStockData = function(stockName){
         }));
     }).then(function(data){
         createStockInfo(data, stockName);
-    }).catch(function(){
-        displayErrorModalHandler();
     });
     ticker = stockName;
     return ticker;
@@ -105,9 +103,9 @@ let createRecentSearchBtns = function(recentSearchObj){
     savedListItemEl.addEventListener("click", function(){
         console.log("click");
         console.log(recentSearchObj.ticker);
-
-        getStockData(recentSearchObj.ticker);
+        
         redditRetrieve(token);
+        getStockData(recentSearchObj.ticker);
         document.getElementById("called-stock-container").style.display="block";
     });
 
@@ -274,9 +272,6 @@ let loadSearches = function(){
 // modal functions 
 let displayModalHandler = function(){
     modalEl.style.display = "block";
-};
-let displayErrorModalHandler = function(){
-    errorModelEl.style.display = "block";
 };
 
 let exitModalHandler = function(){
