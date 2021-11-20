@@ -34,7 +34,7 @@ console.log(stocks)
 // the data usually hovers around 50/50 pos/neg and the avg shows that as well
 let overtSen = function(array) {
     for (i = 0; i < array.length; i++) {
-        console.log(array[i]);
+        // console.log(array[i]);
         if(array[i].key in negation) {
             let c=0;
             let d=0;
@@ -144,10 +144,11 @@ let trainFunc = function(arr) {
 }
 
 // an UNFINISHED projectron model that will hopefully be able to predict a value of 1 or -1 based on strings inputted
-function analyzer() {
-    let analyzerModel = {},
-    weights = [];
-    bias = 0;
+class analyzer {
+    constructor() {
+    analyzerModel = {},
+    this.weights = [{}],
+    this.bias = 0
 
 analyzerModel.predict = function (arr) {
 
@@ -164,12 +165,9 @@ analyzerModel.predict = function (arr) {
 
 analyzerModel.train = function (arr, score) {
 
-    // if (score !== 0 && score !== 1) return null;
-
     if (arr.length !== weights.length) {
         weights = arr
         bias = 0
-        // console.log(weights);
     }
 
     let prediction = analyzerModel.predict(arr, score);
@@ -180,13 +178,11 @@ analyzerModel.train = function (arr, score) {
             weights[i] += gradient * arr[i];
         }
         bias += gradient;
-        // console.log(bias);
-        // console.log(prediction);
     }
     return analyzerModel;
 };
 
- analyzerModel.weights = function() {
+analyzerModel.weights = function() {
     return weights;
 };
 
@@ -197,4 +193,5 @@ analyzerModel.bias = function() {
 
 console.log(analyzerModel);
 return analyzerModel;
+}
 }
