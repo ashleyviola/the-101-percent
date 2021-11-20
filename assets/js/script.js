@@ -30,7 +30,7 @@ let getStockData = function(stockName){
             return response.json();
         }));
     }).then(function(data){
-        createStockInfo(data, stockName);
+        // createStockInfo(data, stockName);
     });
     ticker = stockName;
     return ticker;
@@ -83,7 +83,7 @@ let formSubmitHandler = function(event){
 
             getStockData(stockCallNameInput);
             createRecentSearchBtns(recentSearchObj);
-            redditRetrieve(token, stockCallNameInput);
+            redditRetrieve(token);
             
     }
     
@@ -212,7 +212,7 @@ let createStockInfo = function(currentData, tickerSymbol){
     openStockPricingValue.id = "stock-open-value";
     stockPricingEl.appendChild(openStockPricingValue);
     let openStockPricing = document.createElement("span");
-    openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["1. open"];
+    // openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["1. open"];
     openStockPricing.id = "stock-open";
     openStockPricingValue.appendChild(openStockPricing);
 
@@ -222,7 +222,7 @@ let createStockInfo = function(currentData, tickerSymbol){
     closeStockPricingValue.id = "stock-close-value";
     stockPricingEl.appendChild(closeStockPricingValue);
     let closeStockPricing = document.createElement("span");
-    closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["4. close"];
+    // closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["4. close"];
     closeStockPricing.id = "stock-close";
     closeStockPricingValue.appendChild(closeStockPricing);
 

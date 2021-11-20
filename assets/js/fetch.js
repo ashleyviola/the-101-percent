@@ -103,13 +103,18 @@ let storeData = function(data) {
 
     if (commentData.length <= 3000) {
 
+
+
+
             for (let i = 0; i < hotArr.length; i++) {
                 // push each comment into the commentData array
                 commentData.push(hotArr[i]);
+                // console.log(commentData.length);
 
                 if (commentData.length >= 3000) {
                     // if the fetch pulls over 1000 comments stop adding new comments and call the sortData() function
                     sortData(commentData);
+                    parseData(commentData);
                     break;
                     }
                 }
@@ -136,11 +141,11 @@ let getSentiment = function(data) {
         // check if the strings contain keywords that would infer the response is positive
         if (item.includes("buy" || "huge" || "moon" || "big" || "green" || "returns" || "bullish" || "bulls" || "🚀" || "pump")) {
             posSen++;
-            console.log(item);
+            // console.log(item);
         }
         if (item.includes("sell" || "candles" || "small" || "loss" || "bad" || "red" || "lose" || "sold" || "bear" || "bearish")) {
             negSen--;
-            console.log(item);
+            // console.log(item);
         }
     });
 
@@ -155,11 +160,12 @@ let getSentiment = function(data) {
     }
     createWsbSentiment(sentiment);
 }
-
-getToken(tokenUrl, userName, password);
-
 stockSearchEl.addEventListener("submit",getToken(tokenUrl, userName, password), function() {
     posSen = 0;
     negSen = 0;
-    redditRetrieve();
+    console.log("click")
+    redditRetrieve(token);
 });
+
+getToken(tokenUrl, userName, password);
+
