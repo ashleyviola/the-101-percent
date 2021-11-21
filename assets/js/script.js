@@ -30,7 +30,7 @@ let getStockData = function(stockName){
             return response.json();
         }));
     }).then(function(data){
-        // createStockInfo(data, stockName);
+        createStockInfo(data, stockName);
     });
     ticker = stockName;
     return ticker;
@@ -203,7 +203,7 @@ let createStockInfo = function(currentData, tickerSymbol){
 
     // create today's date 
     let todaysDateEl = document.createElement("h3");
-    todaysDateEl.textContent = moment().format("dddd, MMMM d");
+    todaysDateEl.textContent = moment().format("dddd, MMMM D");
     stockPricingEl.appendChild(todaysDateEl);
 
     // create stock open price information 
