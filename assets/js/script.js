@@ -163,6 +163,12 @@ let createStockInfo = function(currentData, tickerSymbol){
     console.log(tickerSymbol);
     stockInfoEl.textContent = "";
 
+    let friday = moment().day(5-7).format('YYYY-MM-DD');
+        console.log(friday);
+
+    let yesterday = moment().day(-1).format('YYYY-MM-DD');
+        console.log(yesterday);
+
     //create stock-ticker symbol 
     let stockTickerSymbol = document.createElement("h2");
     stockTickerSymbol.textContent = tickerSymbol;
@@ -203,7 +209,14 @@ let createStockInfo = function(currentData, tickerSymbol){
 
     // create today's date 
     let todaysDateEl = document.createElement("h3");
-    todaysDateEl.textContent = moment().format("dddd, MMMM D");
+    if (moment().day(6 && 7)){
+        todaysDateEl.textContent = moment().day(5-7).format("dddd, MMMM D");
+    } else if (moment().hour() < moment().hour(17)){
+        todaysDateEl.textContent = moment().day(-1).format("dddd, MMMM D");
+    } else {
+        todaysDateEl.textContent = moment().format("dddd, MMMM D");
+    }
+
     stockPricingEl.appendChild(todaysDateEl);
 
     // create stock open price information 
@@ -212,7 +225,8 @@ let createStockInfo = function(currentData, tickerSymbol){
     openStockPricingValue.id = "stock-open-value";
     stockPricingEl.appendChild(openStockPricingValue);
     let openStockPricing = document.createElement("span");
-    openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["1. open"];
+    openStockPricing.id = "stock-open";
+    openStockPricingValue.appendChild(openStockPricing);
     openStockPricing.id = "stock-open";
     openStockPricingValue.appendChild(openStockPricing);
 
@@ -222,36 +236,50 @@ let createStockInfo = function(currentData, tickerSymbol){
     closeStockPricingValue.id = "stock-close-value";
     stockPricingEl.appendChild(closeStockPricingValue);
     let closeStockPricing = document.createElement("span");
-    closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["4. close"];
     closeStockPricing.id = "stock-close";
     closeStockPricingValue.appendChild(closeStockPricing);
 
     // create stock high price information 
     let highStockPricingValue = document.createElement("p");
-    highStockPricingValue.textContent = "Today's High | "
+    highStockPricingValue.textContent = "High | "
     highStockPricingValue.id = "stock-close-value";
     stockPricingEl.appendChild(highStockPricingValue);
     let highStockPricing = document.createElement("span");
-    highStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["2. high"];
     highStockPricing.id = "stock-open";
     highStockPricingValue.appendChild(highStockPricing);
 
-    // create stock low price information 
-    let lowStockPricingValue = document.createElement("p");
-    lowStockPricingValue.textContent = "Today's Low | "
-    lowStockPricingValue.id = "stock-close-value";
-    stockPricingEl.appendChild(lowStockPricingValue);
-    let lowStockPricing = document.createElement("span");
-    lowStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["3. low"];
-    lowStockPricing.id = "stock-open";
-    lowStockPricingValue.appendChild(lowStockPricing);
-}
+     // create stock low price information 
+     let lowStockPricingValue = document.createElement("p");
+     lowStockPricingValue.textContent = "Low | "
+     lowStockPricingValue.id = "stock-close-value";
+     stockPricingEl.appendChild(lowStockPricingValue);
+     let lowStockPricing = document.createElement("span");
+     lowStockPricing.id = "stock-open";
+     lowStockPricingValue.appendChild(lowStockPricing);
+    
+    if (moment().day(6 && 7)){
+        openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["1. open"];
+        closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["4. close"];
+        highStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["2. high"];
+        lowStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["3. low"];
 
+    } else if (moment().hour() < moment().hour(17)){
+        openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["1. open"];
+        closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["4. close"];
+        highStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["2. high"];
+        lowStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["3. low"];
+    } else {
+        openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["1. open"];
+        closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["4. close"];
+        highStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["2. high"];
+        lowStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["3. low"];
+    }
+};
 
 // save search input to localstorage 
 let saveSearchInput = function(){
     localStorage.setItem("stockTickers", JSON.stringify(recentSearches));
-}
+};
 
 // load past searches 
 let loadSearches = function(){
@@ -267,7 +295,7 @@ let loadSearches = function(){
     createRecentSearchBtns(savedSearches[i]);
     }
     return savedSearches;
-}
+};
 
 // modal functions 
 let displayModalHandler = function(){
