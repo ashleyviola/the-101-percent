@@ -10,8 +10,6 @@ let modalExitBtn = document.querySelector("close");
 
 let ticker
 
-let todaysDate = moment().format('YYYY-MM-DD');
-
 // alphavantage apiKey
 apiKey = "XY2QN2G7T7ZHKP88"
 // array that holds searched ticker symbols
@@ -164,10 +162,15 @@ let createStockInfo = function(currentData, tickerSymbol){
     stockInfoEl.textContent = "";
 
     let friday = moment().day(5-7).format('YYYY-MM-DD');
-        console.log(friday);
+        console.log("friday " + friday);
+        console.log("today" + moment().day());
 
-    let yesterday = moment().day(-1).format('YYYY-MM-DD');
-        console.log(yesterday);
+    let yesterday = moment().subtract(1, 'day').format('YYYY-MM-DD');
+        console.log("yesterday " + yesterday);
+
+    let todaysDate = moment().format('YYYY-MM-DD');
+    console.log("today " + todaysDate);
+    console.log("today" + moment().day());
 
     //create stock-ticker symbol 
     let stockTickerSymbol = document.createElement("h2");
@@ -209,13 +212,14 @@ let createStockInfo = function(currentData, tickerSymbol){
 
     // create today's date 
     let todaysDateEl = document.createElement("h3");
-    if (moment().day(6 && 7)){
+    if (moment().day(6) || moment().day(7)){
         todaysDateEl.textContent = moment().day(5-7).format("dddd, MMMM D");
-    } else if (moment().hour() < moment().hour(17)){
-        todaysDateEl.textContent = moment().day(-1).format("dddd, MMMM D");
-    } else {
-        todaysDateEl.textContent = moment().format("dddd, MMMM D");
-    }
+    } else if (moment().day(1) || moment().day(2) || moment().day(3) || moment().day(4) || moment().day(5)){}
+        if (moment().isBefore(17, 'hour')){
+            todaysDateEl.textContent = moment().subtract(1, 'day').format("dddd, MMMM D");
+        } else {
+            todaysDateEl.textContent = moment().format("dddd, MMMM D");
+        }
 
     stockPricingEl.appendChild(todaysDateEl);
 
@@ -257,22 +261,27 @@ let createStockInfo = function(currentData, tickerSymbol){
      lowStockPricing.id = "stock-open";
      lowStockPricingValue.appendChild(lowStockPricing);
     
-    if (moment().day(6 && 7)){
+    if (moment().day(1) || moment().day(2) || moment().day(3) || moment().day(4) || moment().day(5)){
+        if (moment().isBefore(17, 'hour')){
+            console.log("it's a weekday before 5pm");
+            openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["1. open"];
+            closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["4. close"];
+            highStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["2. high"];
+            lowStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["3. low"];
+        } else {
+            console.log("it's a weekday after 5pm");
+            openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["1. open"];
+            closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["4. close"];
+            highStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["2. high"];
+            lowStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["3. low"];
+        } 
+
+    } else if (moment().day(6) || moment().day(7)){
+        console.log("it's saturday or sunday");
         openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["1. open"];
         closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["4. close"];
         highStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["2. high"];
         lowStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["3. low"];
-
-    } else if (moment().hour() < moment().hour(17)){
-        openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["1. open"];
-        closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["4. close"];
-        highStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["2. high"];
-        lowStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["3. low"];
-    } else {
-        openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["1. open"];
-        closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["4. close"];
-        highStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["2. high"];
-        lowStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["3. low"];
     }
 };
 
