@@ -220,14 +220,13 @@ let createStockInfo = function(currentData, tickerSymbol){
     let todaysDateEl = document.createElement("h3");
     if (dayofWeek >= 6){
         todaysDateEl.textContent = moment().day(5-7).format("dddd, MMMM D");
-    } else if (dayofWeek <= 5){
-        if (currentTime <= 17){
-            todaysDateEl.textContent = moment().subtract(1, 'day').format("dddd, MMMM D");
-        } else {
+    } else if (dayofWeek <= 5 && currentTime < 17){
+        todaysDateEl.textContent = moment().subtract(1, 'day').format("dddd, MMMM D");
+    } else  if (dayofWeek <= 5 && currentTime >= 17){
             todaysDateEl.textContent = moment().format("dddd, MMMM D");
-        }
-
     }
+
+
     stockPricingEl.appendChild(todaysDateEl);
 
     // create stock open price information 
@@ -268,28 +267,25 @@ let createStockInfo = function(currentData, tickerSymbol){
      lowStockPricing.id = "stock-open";
      lowStockPricingValue.appendChild(lowStockPricing);
     
-    if (dayofWeek <= 5){
-        if (currentTime <= 17){
-            console.log("it's a weekday before 5pm");
-            openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["1. open"];
-            closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["4. close"];
-            highStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["2. high"];
-            lowStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["3. low"];
-        } else {
+    if (dayofWeek >= 6){
+        console.log("it's saturday or sunday");
+        openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["1. open"];
+        closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["4. close"];
+        highStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["2. high"];
+        lowStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["3. low"];
+    } else if(dayofWeek <= 5 && currentTime < 17){
+    console.log("it's a weekday before 5pm");
+        openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["1. open"];
+        closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["4. close"];
+        highStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["2. high"];
+        lowStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["3. low"];
+    } else if (dayofWeek <= 5 && currentTime >= 17){
             console.log("it's a weekday after 5pm");
             openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["1. open"];
             closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["4. close"];
             highStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["2. high"];
             lowStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["3. low"];
         } 
-
-    } else if (dayofWeek >= 6){
-        console.log("it's saturday or sunday");
-        openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["1. open"];
-        closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["4. close"];
-        highStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["2. high"];
-        lowStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["3. low"];
-    }
 };
 
 // save search input to localstorage 
