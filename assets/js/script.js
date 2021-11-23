@@ -172,6 +172,12 @@ let createStockInfo = function(currentData, tickerSymbol){
     console.log("today " + todaysDate);
     console.log("today" + moment().day());
 
+    let dayofWeek = moment().day();
+    console.log(dayofWeek);
+
+    let currentTime = moment().hour();
+    console.log(currentTime);
+
     //create stock-ticker symbol 
     let stockTickerSymbol = document.createElement("h2");
     stockTickerSymbol.textContent = tickerSymbol;
@@ -212,15 +218,16 @@ let createStockInfo = function(currentData, tickerSymbol){
 
     // create today's date 
     let todaysDateEl = document.createElement("h3");
-    if (moment().day(6) || moment().day(7)){
+    if (dayofWeek >= 6){
         todaysDateEl.textContent = moment().day(5-7).format("dddd, MMMM D");
-    } else if (moment().day(1) || moment().day(2) || moment().day(3) || moment().day(4) || moment().day(5)){}
-        if (moment().isBefore(17, 'hour')){
+    } else if (dayofWeek <= 5){
+        if (currentTime <= 17){
             todaysDateEl.textContent = moment().subtract(1, 'day').format("dddd, MMMM D");
         } else {
             todaysDateEl.textContent = moment().format("dddd, MMMM D");
         }
 
+    }
     stockPricingEl.appendChild(todaysDateEl);
 
     // create stock open price information 
@@ -261,8 +268,8 @@ let createStockInfo = function(currentData, tickerSymbol){
      lowStockPricing.id = "stock-open";
      lowStockPricingValue.appendChild(lowStockPricing);
     
-    if (moment().day(1) || moment().day(2) || moment().day(3) || moment().day(4) || moment().day(5)){
-        if (moment().isBefore(17, 'hour')){
+    if (dayofWeek <= 5){
+        if (currentTime <= 17){
             console.log("it's a weekday before 5pm");
             openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["1. open"];
             closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][yesterday]["4. close"];
@@ -276,7 +283,7 @@ let createStockInfo = function(currentData, tickerSymbol){
             lowStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][todaysDate]["3. low"];
         } 
 
-    } else if (moment().day(6) || moment().day(7)){
+    } else if (dayofWeek >= 6){
         console.log("it's saturday or sunday");
         openStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["1. open"];
         closeStockPricing.textContent = "$" + currentData[0]["Time Series (Daily)"][friday]["4. close"];
