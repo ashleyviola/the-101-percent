@@ -1,0 +1,25 @@
+{
+  "name": "the-101-percent",
+  "version": "1.0.0",
+  "description": "Invest money in stocks, not time. \r Our app is designed to help investors quickly research a stock and view online commentary.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashleyviola/the-101-percent.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ashleyviola/the-101-percent/issues"
+  },
+  "homepage": "https://github.com/ashleyviola/the-101-percent#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "path": "^0.12.7",
+    "sequelize": "^6.12.5"
+  }
+}

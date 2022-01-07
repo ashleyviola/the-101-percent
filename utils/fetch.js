@@ -135,37 +135,6 @@ let sortData = function(comments) {
     getSentiment(splitData);
 }
 
-let getSentiment = function(data) {
-
-    data.forEach(item => {
-        // check if the strings contain keywords that would infer the response is positive
-        if (item.includes("buy" || "huge" || "moon" || "big" || "green" || "returns" || "bullish" || "bulls" || "🚀" || "pump")) {
-            posSen++;
-            // console.log(item);
-        }
-        if (item.includes("sell" || "candles" || "small" || "loss" || "bad" || "red" || "lose" || "sold" || "bear" || "bearish")) {
-            negSen--;
-            // console.log(item);
-        }
-    });
-
-    if (posSen >= negSen) {
-        sentiment = "BUY"
-    }
-    if (negSen >= posSen) {
-        sentiment = "SELL"
-    }
-    if (negSen === 0 && posSen === 0) {
-        sentiment = "WALLSTREETBETS DOESN'T CARE ABOUT THIS STOCK"
-    }
-    createWsbSentiment(sentiment);
-}
-stockSearchEl.addEventListener("submit",getToken(tokenUrl, userName, password), function() {
-    posSen = 0;
-    negSen = 0;
-    console.log("click")
-    redditRetrieve(token);
-});
 
 getToken(tokenUrl, userName, password);
 
