@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const sequelize = require('./config/connection');
+const reddit = require('./utils/fetch')
 
 const app = express();
 const PORT = process.env.PORT || 3001
