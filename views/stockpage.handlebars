@@ -1,0 +1,38 @@
+
+<!-- Enter Stock & View Recent Searches  -->
+<div>
+    <form id="stock-search-form">
+        <input type="text" id="stock-call-sign" placeholder="Enter Ticker Symbol" style="text-transform:uppercase">
+        <button type="submit" id="submitBtn"><span><i class="fas fa-search"></i></span></button>
+    </form>
+        <ul id="search-history"></ul>
+</div>
+        
+<!-- Called Stock Data -->
+<div id="called-stock-container" style = "display: none">
+<br>
+</div>
+
+<!-- Empty or Wrong Search Parameters Modal -->
+<div id="searchModal" class="modal is-hidden is-visuallyHidden">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Please enter a valid ticker symbol.</p>
+    </div>
+</div>
+<!-- rWallstreetBets Buy/Don't Buy -->
+<div id="wsb">
+<br>
+    <textarea readonly id ="sentiment" placeholder="Find out What /r/WallstreetBets thinks!" aria-label="Generated Sentiment">
+    </textarea>
+            
+    </div>
+
+<!-- API Capacity -->
+<div id="errorModal" class="modal is-hidden is-visuallyHidden">
+    <div class="modal-content">
+
+        <span class="close">&times;</span>
+        <p>You've reached your search limit. Please wait 1 minute before executing another search.</p>
+    </div>
+</div>

@@ -83,18 +83,7 @@ let overtSen = function(array) {
             console.log(avg);
             // trainFunc(array);
 }
-// split the comment data into seperate words
-let parseData = function(data) {
-    data.forEach(item => {
-        let parsed = item.split(" ");
 
-        parsed.forEach(element => {
-            arr.push(element);
-            return arr;
-        })
-    })
-    shrinkData(arr);
-}
 // remove all symbols from words in the data
 let shrinkData = function(array) {
     array.forEach(item => {

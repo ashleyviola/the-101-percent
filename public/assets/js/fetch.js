@@ -24,7 +24,7 @@ function getToken(url, clientID, secret) {
             let obj = response;
             key = obj.access_token; // declare and pull key from response
             token = key;
-            // console.log(token);
+            console.log(token);
             return token;
 
         }
@@ -102,24 +102,19 @@ let storeData = function(data) {
     savedSearches = JSON.parse(savedSearches);
 
     if (commentData.length <= 3000) {
+        for (let i = 0; i < hotArr.length; i++) {
+            // push each comment into the commentData array
+            commentData.push(hotArr[i]);
+            // console.log(commentData.length);
 
-
-
-
-            for (let i = 0; i < hotArr.length; i++) {
-                // push each comment into the commentData array
-                commentData.push(hotArr[i]);
-                // console.log(commentData.length);
-
-                if (commentData.length >= 3000) {
-                    // if the fetch pulls over 1000 comments stop adding new comments and call the sortData() function
-                    sortData(commentData);
-                    parseData(commentData);
-                    break;
-                    }
+            if (commentData.length >= 3000) {
+                // if the fetch pulls over 1000 comments stop adding new comments and call the sortData() function
+                // sortData(commentData);
+                parseData(commentData)
+                break;
                 }
             }
-    
+        }
 }
 
 let sortData = function(comments) {
@@ -130,9 +125,36 @@ let sortData = function(comments) {
         if (item.includes(ticker)) {
             splitData.push(item);
         }
-      
     });
-    getSentiment(splitData);
+    parseData(splitData);
+}
+
+let parseData = function(data) {
+    data.forEach(item => {
+        let parsed = item.split(" ");
+
+        parsed.forEach(element => {
+            arr.push(element);
+            return arr;
+        })
+    })
+
+}
+
+let createWord = function(array) {
+    const value = 0;
+
+    for (i = 0; i < array.length; i++) {
+        word_piece = array[i];
+
+    fetch('api/words', {
+        method: 'POST',
+        body: JSON.stringify({
+            word_piece,
+            value
+        })
+    })
+    }
 }
 
 

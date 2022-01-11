@@ -30,8 +30,9 @@ let getStockData = function(stockName){
             return response.json();
         }));
     }).then(function(data){
-        // createStockInfo(data, stockName);
+        createStockInfo(data, stockName);
     });
+    console.log(stockName);
     ticker = stockName;
     return ticker;
 
